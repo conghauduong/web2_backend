@@ -10,7 +10,7 @@ var app = express();
 var router = express.Router();
  
 //you need to update wp with your own database name
-var db = monk('mongodb://imhikarucat:12345abcde@ds131237.mlab.com:31237/vu-nodejs-db'); //db name here
+var db = monk('mongodb://user:user@ds135537.mlab.com:35537/web_group2'); //db name here
  
  
 //use objects in app
@@ -34,45 +34,6 @@ app.get('/home', function(req, res){
 //SERVER SIDE ROUTING
 app.use('/', router);
 
-//Get All
-router.get('/students', function(req, res) {
-    req.db.collection('students').find({},{"limit": 100},function(e,docs){
-    	res.json(docs);
-	});
-});
- 
-//Get By _id
-router.get('/students/:id', function(req, res){
-	req.db.collection('students').findOne(req.params.id, function(e, doc){
-		  res.json(doc);
-	})
-});
-
- 
-//Update by _id
-router.put('/students/:id', function(req, res){
-  	req.db.collection('students').update({_id: req.params.id}, {name: req.body.name, yob: req.body.yob});
-  	req.db.collection('students').findOne(req.params.id, function(e, doc){
-        	res.json(doc);
-  	})
- 
-});
-
-//Delete by _id
-router.delete('/students/:id', function(req, res){
-  	req.db.collection('students').remove({_id: req.params.id}, function(e, doc){
-        	res.json(doc);
-  	})
-});
- 
-router.post('/students', function(req, res){
- 
-  	console.log(req.body);
-  	req.db.collection('students').insert(req.body, function(e, docs){
-        	res.json(docs);
-  	});
-});
-
 //PRODUCT
 router.get('/products', function(req, res) {
     req.db.collection('products').find({},{"limit": 100},function(e,docs){
@@ -88,13 +49,14 @@ router.get('/products/:id', function(req, res){
  
 router.put('/products/:id', function(req, res){
   	req.db.collection('products').update({_id: req.params.id}, {
-		  id: req.body.id,
-          name: req.body.name, 
+		  productId: req.body.productId,
+          productName: req.body.productName, 
           price: req.body.price, 
           description: req.body.description, 
           brand: req.body.brand, 
           producer: req.body.producer,
-          imageurl: req.body.imageurl,
+		  imageurl: req.body.imageurl,
+		  productType: req.body.productType
         });
   	req.db.collection('products').findOne(req.params.id, function(e, doc){
         	res.json(doc);
@@ -130,8 +92,8 @@ router.get('/categories/:id', function(req, res){
  
 router.put('/categories/:id', function(req, res){
   	req.db.collection('categories').update({_id: req.params.id}, {
-		  id: req.body.id,
-          name: req.body.name,
+			categoryId: req.body.catergoryId,
+        	categoryName: req.body.catergoryName,
         });
   	req.db.collection('categories').findOne(req.params.id, function(e, doc){
         	res.json(doc);
@@ -172,7 +134,7 @@ router.put('/orders/:id', function(req, res){
 		  email: req.body.email,
 		  phone: req.body.phone,
 		  address: req.body.address,
-		  orderdate: req.body.orderdate,
+		  orderDate: req.body.orderDate,
 		  total: req.body.total,
         });
   	req.db.collection('orders').findOne(req.params.id, function(e, doc){
